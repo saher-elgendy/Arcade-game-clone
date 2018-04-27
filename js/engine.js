@@ -26,6 +26,10 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
+    canvas.style.position = 'absolute';
+    canvas.style.top = '10px';
+    canvas.style.left= '25%';
+    canvas.style.display = 'none';
     doc.body.appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
