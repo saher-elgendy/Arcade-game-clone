@@ -39,11 +39,16 @@ class Enemy extends Entities {
  // checking collisions of enemies with the player and resetting the position of the player after collision
     checkCollisions(){
       //creating  a range in which both player and enemies should not exist together
+     
        if(player.x - this.x >= -40 && player.x - this.x <= 70 && 
                     player.y - this.y >= -40 && player.y - this.y <= 30 ) {
+       // sound of collision
+        const collisionSound = new Audio('sounds/collision.mp3');
+        collisionSound.volume = 0.6;
+        collisionSound.play()
         // initial positions
-         player.x = 200;
-         player.y = 400;
+        player.x = 200;
+        player.y = 400;
        }
     }
 }
@@ -127,9 +132,14 @@ document.addEventListener('keyup', function(e) {
 
 // when click start game button 
 function startGame() {
-  const starter = document.querySelector('.starter');
-  starter.style.display = 'none';
-  ctx.canvas.style.display = 'block';
+    const audio = new Audio('sounds/main.mp3');
+    audio.volume = .2;
+    audio.loop = 'loop';
+    audio.play();
+
+   const starter = document.querySelector('.starter');
+   starter.style.display = 'none';
+   ctx.canvas.style.display = 'block';
 }
 
 document.querySelector('.start-button').addEventListener('click',startGame);
