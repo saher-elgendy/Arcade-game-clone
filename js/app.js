@@ -1,16 +1,17 @@
 
+
+// the music is from https://the-arcadium.net/
+
 class Entities{
-    constructor(x,y,speed,sprite){
+    constructor(x,y,sprite,speed){
         this.x = x;
         this.y = y;
-        this.speed = speed;
         this.sprite = sprite;
+        this.speed = speed;
+        
     
     }
 // a static function to change the speed of enemies when need this
-    static changeSpeed(){
-      return Math.floor(Math.random() * 200) + 100  ;
-    }
   
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -18,14 +19,19 @@ class Entities{
 }
 // Enemies our player must avoid
 class Enemy extends Entities {
-    constructor(x,y,speed,sprite) {
-        super(x,y,speed);
-        this.sprite = "images/enemy-bug.png";
+    constructor(x,y,sprite,speed) {
+        super(x,y,sprite,speed);
+       
     }
-
+ 
     render() {
         super.render();
     }
+
+    static changeSpeed(){
+      return Math.floor(Math.random() * 200) + 100  ;
+    }
+  
 // updating enemies positions and speed
     update(dt) {
         this.x += this.speed * dt;
@@ -33,14 +39,14 @@ class Enemy extends Entities {
     // this will reset the position of the enemies again when be off-canvas
         if (this.x > ctx.canvas.width) {
             this.x = 0;
-            this.speed = Entities.changeSpeed();
+            this.speed = Enemy.changeSpeed();
         }
     }
  // checking collisions of enemies with the player and resetting the position of the player after collision
     checkCollisions(){
       //creating  a range in which both player and enemies should not exist together
      
-       if(player.x - this.x >= -40 && player.x - this.x <= 70 && 
+        if(player.x - this.x >= -40 && player.x - this.x <= 70 && 
                     player.y - this.y >= -40 && player.y - this.y <= 30 ) {
        // sound of collision
         const collisionSound = new Audio('sounds/collision.mp3');
@@ -55,10 +61,14 @@ class Enemy extends Entities {
 
 // the player which we control
 class Player extends Entities {
-    constructor(x,y,sprite) {
-        super(x,y,sprite);
-        this.sprite = 'images/char-boy.png';
+    constructor(x,y, sprite) {
+        super(x,y);
+        this.sprite = sprite || 'images/char-horn-girl.png';
     }
+
+   static getSprite(){
+      return document.querySelector('.chosen').firstElementChild.src;
+   }
 
     render() {
         super.render();
@@ -90,32 +100,36 @@ class Player extends Entities {
              break;
       }
     }  
-    choosePlayer(){
+    static choosePlayer(){
        this.classList.add('chosen');
-
+    
        const chosen = document.querySelector('.chosen');
-
+       console.log(chosen)
+       // chhoose the player and remove the others
         playerCharacters.forEach(character => {
           if(!character.classList.contains('chosen')) character.style.display = 'none';  
         });
-
-         player.sprite = chosen.firstElementChild.src;
-      
-    } 
-    
-   
+       
+        //this.sprite = Player.getSprite();     
+    }
+ 
 }
+
 
 const player = new Player(200,380);
 
 const playerCharacters = [...document.querySelectorAll('.player')];
 
-playerCharacters.forEach(character => character.addEventListener('click', player.choosePlayer));
+playerCharacters.forEach(character => character.addEventListener('click', Player.choosePlayer));
+playerCharacters.forEach(character => character.addEventListener('click', Player.getSprite));
+
 
 // Position "y" where the enemies will are created
 const enemiesY = [50, 140, 220];
 // creating an array of enemies 
-const allEnemies = enemiesY.map(y => new Enemy(0, y, Entities.changeSpeed()));
+const allEnemies = enemiesY.map(y => new Enemy(0, y,'images/enemy-bug.png', Enemy.changeSpeed()));
+
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -132,15 +146,26 @@ document.addEventListener('keyup', function(e) {
 
 // when click start game button 
 function startGame() {
+    //start main game music
     const audio = new Audio('sounds/main.mp3');
-    audio.volume = .2;
+    audio.volume = 0.2;
+    // repeating the music while the player is alive
     audio.loop = 'loop';
+    audio.muted = true;
     audio.play();
-
-   const starter = document.querySelector('.starter');
-   starter.style.display = 'none';
-   ctx.canvas.style.display = 'block';
+   // showing canvas when click Start Game button
+    const starter = document.querySelector('.starter');
+    starter.style.display = 'none';
+    ctx.canvas.style.display = 'block';
 }
 
 document.querySelector('.start-button').addEventListener('click',startGame);
 
+
+
+
+/*const prizesLocations = {
+  'images/Gem blue.png',:380,
+  'images/Gem Green.png',380,
+  'images/Gem Orange.png'380
+}*/
