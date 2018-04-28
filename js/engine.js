@@ -51,6 +51,7 @@ var Engine = (function(global) {
         update(dt);// here is the function that will update the entities with the new values
         render();
 
+            
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
          */
@@ -143,8 +144,9 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
+ 
         renderEntities();
+
     }
 
     /* This function is called by the render function and is called on each game
@@ -157,12 +159,9 @@ var Engine = (function(global) {
          */
        allEnemies.forEach(function(enemy) {
             enemy.render();
-        });
+       });
 
-
-  
-        player.render()
-     
+       player.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -182,7 +181,12 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-horn-girl.png',
+        'images/char-cat-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
+
     ]);
     Resources.onReady(init);
 
