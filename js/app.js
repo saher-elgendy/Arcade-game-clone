@@ -153,7 +153,7 @@ function startGame() {
     audio.volume = 0.2;
     // repeating the music while the player is alive
     audio.loop = 'loop';
-    audio.muted = true;
+   // audio.muted = true;
     audio.play();
    // showing canvas when click Start Game button
     const starter = document.querySelector('.starter');
