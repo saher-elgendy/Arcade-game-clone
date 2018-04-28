@@ -110,10 +110,12 @@ class Player extends Entities {
           if(!character.classList.contains('chosen')) character.style.display = 'none';  
         });
        
-        //this.sprite = Player.getSprite();     
+        this.sprite = chosen.firstElementChild.src;   
+       
     }
  
 }
+
 
 
 const player = new Player(200,380);
@@ -121,9 +123,9 @@ const player = new Player(200,380);
 const playerCharacters = [...document.querySelectorAll('.player')];
 
 playerCharacters.forEach(character => character.addEventListener('click', Player.choosePlayer));
-playerCharacters.forEach(character => character.addEventListener('click', Player.getSprite));
 
 
+console.log(player)
 // Position "y" where the enemies will are created
 const enemiesY = [50, 140, 220];
 // creating an array of enemies 
