@@ -95,10 +95,12 @@ var Engine = (function(global) {
    
     
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(enemy =>  {
             enemy.update(dt);
             enemy.checkCollisions();
         });
+
+        allPrizes.forEach(prize => prize.collected());
         player.update();
        
     }
@@ -160,8 +162,13 @@ var Engine = (function(global) {
        allEnemies.forEach(function(enemy) {
             enemy.render();
        });
-
+       
        player.render();
+        
+    allPrizes.forEach(prize => prize.render());
+            
+
+       
     }
 
     /* This function does nothing but it could have been a good place to
@@ -185,7 +192,10 @@ var Engine = (function(global) {
         'images/char-horn-girl.png',
         'images/char-cat-girl.png',
         'images/char-pink-girl.png',
-        'images/char-princess-girl.png'
+        'images/char-princess-girl.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png',
+        'images/Gem Orange.png'
 
     ]);
     Resources.onReady(init);

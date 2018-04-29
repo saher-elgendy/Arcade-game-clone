@@ -49,12 +49,12 @@ class Enemy extends Entities {
         if(player.x - this.x >= -40 && player.x - this.x <= 70 && 
                     player.y - this.y >= -40 && player.y - this.y <= 30 ) {
        // sound of collision
-        const collisionSound = new Audio('sounds/collision.mp3');
-        collisionSound.volume = 0.6;
-        collisionSound.play()
+           const collisionSound = new Audio('sounds/collision.mp3');
+           collisionSound.volume = 0.6;
+           collisionSound.play()
         // initial positions
-        player.x = 200;
-        player.y = 400;
+           player.x = 200;
+           player.y = 400;
        }
     }
 }
@@ -66,10 +66,6 @@ class Player extends Entities {
         this.sprite = sprite || 'images/char-horn-girl.png';
     }
 
-   static getSprite(){
-      return document.querySelector('.chosen').firstElementChild.src;
-   }
-
     render() {
         super.render();
       
@@ -80,6 +76,7 @@ class Player extends Entities {
         this.x = this.x < 0 ? 0 : this.x > 400 ? 400 : this.x;
         this.y = this.y < 50 ? 50 : this.y > 380 ? 380 : this.y;  
    } 
+
 // updating positions of the player in response to pressing control keys
     handleInput(pressedKey) {
         switch (pressedKey) {
@@ -116,6 +113,29 @@ class Player extends Entities {
  
 }
 
+class Prize extends Entities {
+    constructor(sprite,x,y) {
+     super();
+     this.x = x || Math.floor(Math.random() * 420);
+     this.y = y || Math.floor(Math.random() * 300);
+     this.sprite = sprite;
+    }
+
+    render(){
+      super.render();
+    }
+
+   collected(){
+      if(player.x - this.x >= -50 && player.x - this.x <= 80 && 
+                    player.y - this.y >= -50 && player.y - this.y <= 40 ) {
+          this.x = -200;
+          this.y = -400;
+     
+          const eatSound = new Audio('sounds/eat.wav');
+          eatSound.play();
+     }
+    }
+}
 
 
 const player = new Player(200,380);
@@ -125,11 +145,16 @@ const playerCharacters = [...document.querySelectorAll('.player')];
 playerCharacters.forEach(character => character.addEventListener('click', Player.choosePlayer));
 
 
-console.log(player)
+
 // Position "y" where the enemies will are created
 const enemiesY = [50, 140, 220];
 // creating an array of enemies 
 const allEnemies = enemiesY.map(y => new Enemy(0, y,'images/enemy-bug.png', Enemy.changeSpeed()));
+
+
+const prizeEntities = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
+
+const allPrizes = prizeEntities.map(prize => new Prize(prize));
 
 
 
@@ -153,7 +178,7 @@ function startGame() {
     audio.volume = 0.2;
     // repeating the music while the player is alive
     audio.loop = 'loop';
-   // audio.muted = true;
+    audio.muted = true;
     audio.play();
    // showing canvas when click Start Game button
     const starter = document.querySelector('.starter');
