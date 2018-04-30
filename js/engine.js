@@ -166,8 +166,6 @@ var Engine = (function(global) {
        player.render();
         
     allPrizes.forEach(prize => prize.render());
-            
-
        
     }
 

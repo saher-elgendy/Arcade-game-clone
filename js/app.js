@@ -106,33 +106,33 @@ class Player extends Entities {
         playerCharacters.forEach(character => {
           if(!character.classList.contains('chosen')) character.style.display = 'none';  
         });
-       
-        this.sprite = chosen.firstElementChild.src;   
-       
+      
+        this.sprite = chosen.firstElementChild.src;      
     }
  
 }
 
 class Prize extends Entities {
-    constructor(sprite,x,y) {
-     super();
-     this.x = x || Math.floor(Math.random() * 420);
-     this.y = y || Math.floor(Math.random() * 300);
-     this.sprite = sprite;
+    constructor(x, y, sprite) {
+         super();
+         this.x = x || Math.floor(Math.random() * 400);
+         this.y = y || Math.floor(Math.random() * 250) ;
+         this.sprite = sprite;
+     }
+
+     render(){
+         super.render();
     }
 
-    render(){
-      super.render();
-    }
-
-   collected(){
-      if(player.x - this.x >= -50 && player.x - this.x <= 80 && 
-                    player.y - this.y >= -50 && player.y - this.y <= 40 ) {
-          this.x = -200;
-          this.y = -400;
+    collected(){
+         if(player.x - this.x >= -50 && player.x - this.x <= 80 && 
+                            player.y - this.y >= -50 && player.y - this.y <= 40 ) {
+            this.x = -200;
+            this.y = -400;
      
-          const eatSound = new Audio('sounds/eat.wav');
-          eatSound.play();
+            const eatSound = new Audio('sounds/eat.wav');
+            eatSound.volume = 0.3;
+            eatSound.play();
      }
     }
 }
@@ -154,7 +154,7 @@ const allEnemies = enemiesY.map(y => new Enemy(0, y,'images/enemy-bug.png', Enem
 
 const prizeEntities = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
 
-const allPrizes = prizeEntities.map(prize => new Prize(prize));
+const allPrizes = prizeEntities.map(prize => new Prize(null,null,prize));
 
 
 
@@ -178,7 +178,7 @@ function startGame() {
     audio.volume = 0.2;
     // repeating the music while the player is alive
     audio.loop = 'loop';
-    audio.muted = true;
+    //audio.muted = true;
     audio.play();
    // showing canvas when click Start Game button
     const starter = document.querySelector('.starter');
@@ -189,10 +189,3 @@ function startGame() {
 document.querySelector('.start-button').addEventListener('click',startGame);
 
 
-
-
-/*const prizesLocations = {
-  'images/Gem blue.png',:380,
-  'images/Gem Green.png',380,
-  'images/Gem Orange.png'380
-}*/

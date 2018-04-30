@@ -2,6 +2,7 @@ body {
     text-align: center;
     margin:0;
     padding:0;
+    box-sizing: border-box;
 }
 
 
@@ -36,11 +37,12 @@ body {
 	background-color: #4caf50;
 	width: 25%;
 	height: 10%;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	color: white;
 	position: relative;
-	top: 250px;
-	left: 380px;
+	top: 37%;
+	left:37%;
+	right:37%;
 	border: none;
 	border-radius:30px;
 
