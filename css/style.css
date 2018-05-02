@@ -45,9 +45,58 @@ body {
 	right:37%;
 	border: none;
 	border-radius:30px;
-
 }
 
 .chosen {
 	transition: 1s ease;
 }
+
+.statics {
+	font-family: 'Press Start 2P', cursive;
+	width: 49.5%;
+	display: none;
+	position: relative;
+	top: 2.2rem; 
+	right: 0.2em;
+	border-radius:5px;
+	height: 4vh;
+	background: black;
+	color: white;
+	margin: auto;
+	padding: .2em;
+	box-sizing:inherit;
+}
+
+.static-cont {
+    display: flex;
+    justify-content: space-around;
+}
+
+.score {
+	position: relative;
+	left: 15rem;	
+}
+
+.modal{
+	font-family: 'Press Start 2P', cursive;
+	width: 100%;
+	height: 100vh;
+	display: none;
+	background: black;
+	color: white;
+	font-size:  2em;
+}
+
+.final-msg{
+	position: relative;
+	top: 15%;
+}
+
+.modal-details {
+	width: 100%;
+	height:100vh;
+    display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
