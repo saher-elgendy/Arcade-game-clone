@@ -99,9 +99,12 @@ var Engine = (function(global) {
             enemy.update(dt);
             enemy.checkCollisions();
         });
-
-        allPrizes.forEach(prize => prize.collected());
+        
+        allPrizes.forEach(prize =>  prize.collected());
+      
         player.update();
+
+       
        
     }
 
@@ -164,9 +167,12 @@ var Engine = (function(global) {
        });
        
        player.render();
-        
-    allPrizes.forEach(prize => prize.render());
-       
+   
+      allPrizes.forEach(prize => prize.render());  
+
+      //if(player.lives == 0)  ctx.clearRect(0,0,canvas.width,canvas.height);
+   
+
     }
 
     /* This function does nothing but it could have been a good place to
