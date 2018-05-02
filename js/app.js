@@ -3,27 +3,25 @@
 // the music is from https://the-arcadium.net/
 
 class Entities{
-    constructor(x,y,sprite,speed){
+    constructor(x,y,sprite){
         this.x = x;
         this.y = y;
         this.sprite = sprite;
-        this.speed = speed;
-        
-    
     }
 // a static function to change the speed of enemies when need this
   
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+
 }
 // Enemies our player must avoid
 class Enemy extends Entities {
     constructor(x,y,sprite,speed) {
-        super(x,y,sprite,speed);
-       
+        super(x,y,sprite);
+        this.speed = speed;
     }
- 
+
     render() {
         super.render();
     }
@@ -45,17 +43,29 @@ class Enemy extends Entities {
  // checking collisions of enemies with the player and resetting the position of the player after collision
     checkCollisions(){
       //creating  a range in which both player and enemies should not exist together
-     
+        const livesCont = document.querySelector('.lives');
+       
+        
+        
         if(player.x - this.x >= -40 && player.x - this.x <= 70 && 
                     player.y - this.y >= -40 && player.y - this.y <= 30 ) {
-       // sound of collision
+           // sound of collision
+           player.x = 200;
+           player.y = 400;          
+      
            const collisionSound = new Audio('sounds/collision.mp3');
            collisionSound.volume = 0.6;
            collisionSound.play()
         // initial positions
-           player.x = 200;
-           player.y = 400;
+         
+           player.lives -= 1;
+           livesCont.innerHTML = player.lives;
+         
+            player.die();
+
        }
+
+       player.win();
     }
 }
 
@@ -64,17 +74,19 @@ class Player extends Entities {
     constructor(x,y, sprite) {
         super(x,y);
         this.sprite = sprite || 'images/char-horn-girl.png';
+        this.lives = 5;
+        this.score = 0;
     }
 
     render() {
-        super.render();
-      
+        super.render();  
     }
 
 // updating the player positions in response to crossing boundaries
-    update() {   
+    update() {  
         this.x = this.x < 0 ? 0 : this.x > 400 ? 400 : this.x;
-        this.y = this.y < 50 ? 50 : this.y > 380 ? 380 : this.y;  
+        this.y = this.y < 50 ? 50 : this.y > 380 ? 380 : this.y;
+        this.getSprite();
    } 
 
 // updating positions of the player in response to pressing control keys
@@ -97,6 +109,53 @@ class Player extends Entities {
              break;
       }
     }  
+
+    getSprite() {
+         const chosen = document.querySelector('.chosen');
+         if(chosen) {
+             this.sprite = chosen.firstElementChild.getAttribute('src');   
+         }  
+    }
+
+    win() {
+       if (this.score >= 100000 && this.lives > 0) {
+           // hide the canvas
+           ctx.canvas.style = 'none';
+           // show the modal
+           document.querySelector('.modal').style.display = 'block';
+           // hide the statics panel 
+           document.querySelector('.statics').style.display = 'none';
+           //show the final message
+           document.querySelector('.final-msg').innerHTML = 'You Win';
+           //show the final score
+           document.querySelector('.final-score').innerHTML = document.querySelector('.points').innerHTML; 
+           //go to the start page
+           setTimeout(() => location.reload(), 5000);
+       }
+    }
+
+    die(){
+       if (this.lives == 0 && this.score < 100000) {
+           // stop the main music
+           mainMusic.pause();
+           // hide the canvas
+           ctx.canvas.style.display = 'none';
+           // show the modal
+           document.querySelector('.modal').style.display = 'block';
+           // hide the statics panel
+           document.querySelector('.statics').style.display = 'none';
+           // showing the final score
+           document.querySelector('.final-score').innerHTML = `Score: ${player.score}`;
+           // sound of game over and delay it two seconds
+           const gameOverSound = new Audio('sounds/game over.wav');
+           gameOverSound.volume = 0.4;
+           setTimeout(() => gameOverSound.play(), 2000);
+           // go to the start page
+           setTimeout(() => location.reload(), 7000);
+       }
+
+     }
+
     static choosePlayer(){
        this.classList.add('chosen');
     
@@ -120,28 +179,48 @@ class Prize extends Entities {
          this.sprite = sprite;
      }
 
-     render(){
+    render(){
          super.render();
     }
+    
+   reset(){
+       this.x = Math.floor(Math.random() * 400);
+       this.y = Math.floor(Math.random() * 250);
+
+       const resetSound = new Audio('sounds/reset.wav');
+       resetSound.volume = 0.2;
+       resetSound.play();
+  }
 
     collected(){
-         if(player.x - this.x >= -50 && player.x - this.x <= 80 && 
-                            player.y - this.y >= -50 && player.y - this.y <= 40 ) {
-            this.x = -200;
-            this.y = -400;
-     
-            const eatSound = new Audio('sounds/eat.wav');
-            eatSound.volume = 0.3;
-            eatSound.play();
-     }
+            const score = document.querySelector('.points')
+            if(player.x - this.x >= -60 && player.x - this.x <= 90 && player.y - this.y >= -60 && player.y - this.y <= 70 ){
+
+               this.x = -400;
+               this.y = -400;
+               prizeNum += 1 ;
+              
+               if(prizeNum % 3 === 0) allPrizes.forEach(prize => setTimeout(() => prize.reset(),Math.floor(Math.random() * 5000)));
+             
+               player.score += this.sprite === 'images/Gem Blue.png'?  1000 : 
+               this.sprite === 'images/Gem Green.png' ?  2000 : 
+               this.sprite === 'images/Gem Orange.png' ? 3000 :  player.score;
+
+               score.innerHTML = player.score;       
+           
+               const coinSound = new Audio('sounds/coin.mp3');
+               coinSound.volume = 0.2;
+               coinSound.play();
+            }
     }
 }
 
-
+let prizeNum = 0;
+// instaniating a player
 const player = new Player(200,380);
-
+// creating an array of player characters that casn start game
 const playerCharacters = [...document.querySelectorAll('.player')];
-
+// if any character clicked it will be choosed to be our player
 playerCharacters.forEach(character => character.addEventListener('click', Player.choosePlayer));
 
 
@@ -156,11 +235,14 @@ const prizeEntities = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Ge
 
 const allPrizes = prizeEntities.map(prize => new Prize(null,null,prize));
 
+let mainMusic = new Audio('sounds/main.mp3');
 
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+
+
+ function detectKey(e) {
     const allowedKeys = {
         37: 'left',
         38: 'up',
@@ -169,21 +251,27 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-});
+}
+
+document.addEventListener('keyup', detectKey);
+
 
 // when click start game button 
 function startGame() {
-    //start main game music
-    const audio = new Audio('sounds/main.mp3');
-    audio.volume = 0.2;
-    // repeating the music while the player is alive
-    audio.loop = 'loop';
-    //audio.muted = true;
-    audio.play();
-   // showing canvas when click Start Game button
+    // showing canvas when click Start Game button
     const starter = document.querySelector('.starter');
+    const staticsPanel = document.querySelector('.statics');
     starter.style.display = 'none';
     ctx.canvas.style.display = 'block';
+    staticsPanel.style.display = 'block';
+    //start main game music
+    //const mainMusic = new Audio('sounds/main.mp3');
+    mainMusic.volume = 0.2;
+    // repeating the music while the player is alive
+    mainMusic.loop = 'loop';
+    //audio.muted = true;
+    mainMusic.play();
+
 }
 
 document.querySelector('.start-button').addEventListener('click',startGame);
