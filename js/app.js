@@ -73,7 +73,7 @@ class Enemy extends Entities {
 class Player extends Entities {
     constructor(x,y, sprite) {
         super(x,y);
-        this.sprite = sprite || 'images/char-horn-girl.png';
+        this.sprite = sprite || 'images/char-boy.png';
         this.lives = 5;
         this.score = 0;
     }
@@ -188,7 +188,7 @@ class Prize extends Entities {
        resetSound.volume = 0.2;
        resetSound.play();
 
-       if(player.score >= 110000)  resetSound.pause()
+       if(player.score >= 200000)  resetSound.pause()
   }
 
   update() {
@@ -205,11 +205,7 @@ class Prize extends Entities {
                 enemy.y = -400;
             });
            
-          if(player.score > 100000) {
-              this.x -= 600;
-              this.y -= 600;
-          }
-
+          
             const explosionSound = new Audio('sounds/explosion.mp3')
             explosionSound.volume = 0.4;
             explosionSound.play();
@@ -227,12 +223,14 @@ class Prize extends Entities {
                prizeNum += 1 ;
               
                if(prizeNum % 3 === 0) allPrizes.forEach(prize => setTimeout(() => prize.reset(),Math.floor(Math.random() * 5000)));
- 
-               player.score += this.sprite === 'images/Gem Blue.png' ? 1000 : 
-               this.sprite === 'images/Gem Green.png' ? 2000 : 
-               this.sprite === 'images/Gem Orange.png' ? 3000 : 
-               this.sprite === 'images/Heart.png' ? 0 : 
-               this.sprite === 'images/Key.png' ? 100000 : player.score;
+               // add the points only before getting the key
+               if(player.score < 200000){
+                   player.score += this.sprite === 'images/Gem Blue.png' ? 1000 : 
+                   this.sprite === 'images/Gem Green.png' ? 2000 : 
+                   this.sprite === 'images/Gem Orange.png' ? 3000 : 
+                   this.sprite === 'images/Heart.png' ? 0 : 
+                   this.sprite === 'images/Key.png' ? 100000 : player.score;
+               }
               
                this.update();
                points.innerHTML = player.score;       
@@ -240,6 +238,8 @@ class Prize extends Entities {
                const coinSound = new Audio('sounds/coin.mp3');
                coinSound.volume = 0.2;
                coinSound.play();
+
+               if(player.score >= 200000) coinSound.pause();
 
                
             }
