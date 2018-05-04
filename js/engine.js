@@ -26,9 +26,10 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
-    canvas.style.position = 'absolute';
-    canvas.style.top = '10px';
+    canvas.style.position = 'relative';
+    canvas.style.top = '10%';
     canvas.style.left= '25%';
+    canvas.style.right= '25%';
     canvas.style.display = 'none';
     doc.body.appendChild(canvas);
 
@@ -101,6 +102,9 @@ var Engine = (function(global) {
         });
         
         allPrizes.forEach(prize =>  prize.collected());
+
+        if(player.score >= 48000  && player.score <= 60000)   Heart.collected();
+         if(player.score >= 10000 && player.score <= 20000) key.collected();
       
         player.update();
 
@@ -160,19 +164,29 @@ var Engine = (function(global) {
      */
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
-         * the render function you have defined.
-         */
-       allEnemies.forEach(function(enemy) {
-            enemy.render();
-       });
+         * the render function you have defined.*/
+         //render enemies
        
+       allEnemies.forEach(enemy => enemy.render());
+       // render player
        player.render();
-   
-      allPrizes.forEach(prize => prize.render());  
+       // render prizes
+       if(player.score < 100000){
+           allPrizes.forEach(prize => prize.render());
+       }
 
-      //if(player.lives == 0)  ctx.clearRect(0,0,canvas.width,canvas.height);
-   
+            
+        if(player.score >= 48000  && player.score <= 60000)  Heart.render();
+         if(player.score >= 10000 && player.score <= 20000) key.render();
+       
 
+            /*let i = 0;
+            while(i < 3 ){
+               
+             allPrizes[i].render();
+             i++;
+            }   
+            if( player.score  == 12000) allPrizes[i].render();*/
     }
 
     /* This function does nothing but it could have been a good place to
@@ -199,7 +213,9 @@ var Engine = (function(global) {
         'images/char-princess-girl.png',
         'images/Gem Blue.png',
         'images/Gem Green.png',
-        'images/Gem Orange.png'
+        'images/Gem Orange.png',
+        'images/Heart.png',
+        'images/Key.png'
 
     ]);
     Resources.onReady(init);

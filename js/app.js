@@ -109,16 +109,17 @@ class Player extends Entities {
              break;
       }
     }  
-
+    // this function will get the character chosen to start the game
     getSprite() {
          const chosen = document.querySelector('.chosen');
+
          if(chosen) {
              this.sprite = chosen.firstElementChild.getAttribute('src');   
          }  
     }
 
     win() {
-       if (this.score >= 100000 && this.lives > 0) {
+       if (this.score >= 250000 && this.lives > 0) {
            // hide the canvas
            ctx.canvas.style = 'none';
            // show the modal
@@ -160,15 +161,11 @@ class Player extends Entities {
        this.classList.add('chosen');
     
        const chosen = document.querySelector('.chosen');
-       console.log(chosen)
        // chhoose the player and remove the others
         playerCharacters.forEach(character => {
           if(!character.classList.contains('chosen')) character.style.display = 'none';  
-        });
-      
-        this.sprite = chosen.firstElementChild.src;      
+        });      
     }
- 
 }
 
 class Prize extends Entities {
@@ -184,16 +181,45 @@ class Prize extends Entities {
     }
     
    reset(){
-       this.x = Math.floor(Math.random() * 400);
+       this.x = Math.floor(Math.random() * 350);
        this.y = Math.floor(Math.random() * 250);
 
        const resetSound = new Audio('sounds/reset.wav');
        resetSound.volume = 0.2;
        resetSound.play();
+
+       if(player.score >= 110000)  resetSound.pause()
   }
 
-    collected(){
-            const score = document.querySelector('.points')
+  update() {
+       if(this.sprite === 'images/Heart.png'){
+            player.lives += 1;
+            document.querySelector('.lives').innerHTML =  player.lives;
+            const newSoulSound = new Audio('sounds/new-life.mp3');
+            newSoulSound.play();
+       }
+
+       if(this.sprite === 'images/Key.png') {
+            allEnemies.forEach(enemy => {
+                enemy.x = -400;
+                enemy.y = -400;
+            });
+           
+          if(player.score > 100000) {
+              this.x -= 600;
+              this.y -= 600;
+          }
+
+            const explosionSound = new Audio('sounds/explosion.mp3')
+            explosionSound.volume = 0.4;
+            explosionSound.play();
+                    
+      }
+  }
+
+  collected(){
+            const points = document.querySelector('.points')
+           
             if(player.x - this.x >= -60 && player.x - this.x <= 90 && player.y - this.y >= -60 && player.y - this.y <= 70 ){
 
                this.x = -400;
@@ -201,18 +227,23 @@ class Prize extends Entities {
                prizeNum += 1 ;
               
                if(prizeNum % 3 === 0) allPrizes.forEach(prize => setTimeout(() => prize.reset(),Math.floor(Math.random() * 5000)));
-             
-               player.score += this.sprite === 'images/Gem Blue.png'?  1000 : 
-               this.sprite === 'images/Gem Green.png' ?  2000 : 
-               this.sprite === 'images/Gem Orange.png' ? 3000 :  player.score;
-
-               score.innerHTML = player.score;       
-           
+ 
+               player.score += this.sprite === 'images/Gem Blue.png' ? 1000 : 
+               this.sprite === 'images/Gem Green.png' ? 2000 : 
+               this.sprite === 'images/Gem Orange.png' ? 3000 : 
+               this.sprite === 'images/Heart.png' ? 0 : 
+               this.sprite === 'images/Key.png' ? 100000 : player.score;
+              
+               this.update();
+               points.innerHTML = player.score;       
+              
                const coinSound = new Audio('sounds/coin.mp3');
                coinSound.volume = 0.2;
                coinSound.play();
+
+               
             }
-    }
+     }
 }
 
 let prizeNum = 0;
@@ -234,6 +265,10 @@ const allEnemies = enemiesY.map(y => new Enemy(0, y,'images/enemy-bug.png', Enem
 const prizeEntities = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
 
 const allPrizes = prizeEntities.map(prize => new Prize(null,null,prize));
+
+const Heart = new Prize(null, null, 'images/Heart.png');
+
+const key = new Prize(420,50,'images/Key.png');
 
 let mainMusic = new Audio('sounds/main.mp3');
 
