@@ -103,8 +103,8 @@ var Engine = (function(global) {
         
         allPrizes.forEach(prize =>  prize.collected());
 
-        if(player.score >= 48000  && player.score <= 60000)   Heart.collected();
-         if(player.score >= 10000 && player.score <= 20000) key.collected();
+        if(player.score >= 60000  && player.score <= 70000)   Heart.collected();
+         if(player.score >= 100000 && player.score <= 200000) key.collected();
       
         player.update();
 
