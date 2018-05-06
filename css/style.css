@@ -54,11 +54,10 @@ body {
 
 .statics {
 	font-family: 'Press Start 2P', cursive;
-	width: 49.5%;
+	width: 50%;
 	display: none;
 	position: relative;
-	top: 2.2rem; 
-	right: 0.2em;
+	top: 2.2rem;
 	border-radius:5px;
 	height: 4vh;
 	background: black;
@@ -73,11 +72,6 @@ body {
     justify-content: space-around;
 }
 
-.score {
-	position: relative;
-	left: 15rem;	
-}
-
 .modal{
 	font-family: 'Press Start 2P', cursive;
 	width: 100%;
@@ -88,11 +82,10 @@ body {
 	font-size:  2em;
 }
 
-.final-msg{
-	position: relative;
-	top: 15%;
+.final-score{
+	position:relative;
+	bottom:25%;
 }
-
 .modal-details {
 	width: 100%;
 	height:100vh;
