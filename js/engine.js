@@ -133,7 +133,7 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
+                'images/grass-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
@@ -146,14 +146,12 @@ var Engine = (function(global) {
 
             if(player.score >= 100000){
                rowImages = [
-                'images/stone-block.png',
-                'images/stone-block.png',                          // Top row is water
-                'images/stone-block.png',                         // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/grass-block.png', 
+                'images/stone-block.png',                      
+                'images/stone-block.png',                         
+                'images/stone-block.png',   
+                'images/stone-block.png',   
+                'images/grass-block.png'   
             ]
              
             }
@@ -205,7 +203,7 @@ var Engine = (function(global) {
          if(player.score >= 50000 && player.score <= 60000) key.render();
 
        if(player.score > 100000){
-           ctx.drawImage(Resources.get('images/char-princess-girl.png'), 200,0);
+           ctx.drawImage(Resources.get('images/char-princess-girl.png'), 200, -50);
            allStones.forEach(stone => stone.render());
        }
 

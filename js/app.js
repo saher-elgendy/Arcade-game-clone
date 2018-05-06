@@ -100,7 +100,7 @@ class Player extends Entities {
           this.y = 400;
           // the princess scream 
           const screamSound = new Audio('sounds/scream.mp3');
-          settimeout(() => screamSound.play(), 2000);
+          setTimeout(() => screamSound.play(), 2000);
         }
 
         if(this.score > 100000 && player.y == 50){
