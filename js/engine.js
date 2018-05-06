@@ -23,7 +23,8 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
-
+        
+    canvas.style.border = "1px solid #DDD"
     canvas.width = 505;
     canvas.height = 606;
     canvas.style.margin = 'auto';
