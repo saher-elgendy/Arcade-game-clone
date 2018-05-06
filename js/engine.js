@@ -26,11 +26,7 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
-    canvas.style.position = 'relative';
-    canvas.style.top = '10%';
-    canvas.style.left= '25%';
-    
-    // canvas.style.transform = 'translateX(-50%)';
+    canvas.style.margin = 'auto';
     canvas.style.display = 'none';
     doc.body.appendChild(canvas);
 
@@ -107,7 +103,7 @@ var Engine = (function(global) {
        } 
 
         if(player.score >= 24000  && player.score <= 30000)   Heart.collected();
-         if(player.score >= 50000 && player.score <= 60000) key.collected();
+        if(player.score >= 50000 && player.score <= 60000) key.collected();
       
         player.update();
 
@@ -200,20 +196,14 @@ var Engine = (function(global) {
 
             
         if(player.score >= 24000  && player.score <= 30000)  Heart.render();
-         if(player.score >= 50000 && player.score <= 60000) key.render();
+         if(player.score >= 50000 && player.score < 100000) key.render();
 
-       if(player.score > 100000){
+       if(player.score >= 100000){
            ctx.drawImage(Resources.get('images/char-princess-girl.png'), 200, -50);
            allStones.forEach(stone => stone.render());
        }
 
-            /*let i = 0;
-            while(i < 3 ){
-               
-             allPrizes[i].render();
-             i++;
-            }   
-            if( player.score  == 12000) allPrizes[i].render();*/
+          
     }
 
     /* This function does nothing but it could have been a good place to

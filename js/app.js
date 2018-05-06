@@ -44,12 +44,10 @@ class Enemy extends Entities {
     checkCollisions(){
       //creating  a range in which both player and enemies should not exist together
         const livesCont = document.querySelector('.lives');
-       
-        
-        
+         
         if(player.x - this.x >= -40 && player.x - this.x <= 70 && 
                     player.y - this.y >= -40 && player.y - this.y <= 30 ) {
-           // initial positions
+           //initial positions
            player.x = 200;
            player.y = 400;          
            // sound of collision
@@ -58,14 +56,13 @@ class Enemy extends Entities {
            collisionSound.play()
            // player lives decrease by one
            player.lives -= 1;
-           // show the updated lives number 
+           // show the updated lives number in statics panel
            livesCont.innerHTML = player.lives;
            // check if the player still have lives
+           // if not the game ends by game over and the player score
            player.die();
 
        }
-       // check if the player completed all tasks successfully
-      // player.win();
     }
 }
 
@@ -89,20 +86,23 @@ class Player extends Entities {
         this.y = this.y < 50 ? 50 : this.y > 380 ? 380 : this.y;
         // get the sprite of the character chosen to start the game
         this.getSprite();
-       // if the player got the key pposition it temporarily in x 200 and y 200
-        if(this.score >= 100000 && this.score <= 150000){ // 
+       // if the player got the key position it temporarily in x 200 and y 200
+        if(this.score >= 100000 && this.score < 150000){ // 
           setTimeout(() =>{
-            this.score += 50000;
+            // this will ensure thatt the player can move freely not fixed in the initial position
+            this.score = this.score + 50000;
             document.querySelector('.points').innerHTML = this.score;
           }, 1000);
-
+          // return the player back to the initial positions
+          // without adding 50000 in the prvious block the player will be fixed in place forever
           this.x = 200;
           this.y = 400;
           // the princess scream 
           const screamSound = new Audio('sounds/scream.mp3');
+          screamSound.volume = 0.2;
           setTimeout(() => screamSound.play(), 2000);
         }
-
+        // when the player get to the second stage and get the princess the playyer wins
         if(this.score > 100000 && player.y == 50){
           this.win();
         }
@@ -150,6 +150,7 @@ class Player extends Entities {
            document.querySelector('.final-score').innerHTML = document.querySelector('.points').innerHTML; 
            // the princess laugh
            const laughSound = new Audio('sounds/laugh.mp3');
+           laughSound.volume = 0.2;
            setTimeout(() => laughSound.play(), 1500);
            //go to the start page
            setTimeout(() => location.reload(), 7000);
@@ -157,7 +158,8 @@ class Player extends Entities {
     }
 
     die(){
-       if (this.lives == 0 && this.score < 50000) {
+      // if the player lost all of his lives
+       if (this.lives == 0 ) {
            // stop the main music
            mainMusic.pause();
            // hide the canvas
@@ -177,18 +179,17 @@ class Player extends Entities {
        }
 
      }
-
-    static choosePlayer(){
+     // this function is to choose the character to start the game
+     static choosePlayer(){
+       // the clicked character marked by class 'chosen'
        this.classList.add('chosen');
-    
-       const chosen = document.querySelector('.chosen');
-       // chhoose the player and remove the others
+       // show the character we choose and hide the others
         playerCharacters.forEach(character => {
           if(!character.classList.contains('chosen')) character.style.display = 'none';  
         });      
     }
 }
-
+// the prizes the player get to collect the points needed to go to the second stage and save the princess
 class Prize extends Entities {
     constructor(x, y, sprite) {
          super();
@@ -202,47 +203,45 @@ class Prize extends Entities {
     }
     
    reset(){
+       //randomize the positions where gems appear every time
        this.x = Math.floor(Math.random() * 350);
        this.y = Math.floor(Math.random() * 250);
-
+       // sound of rrsetting gems again
        const resetSound = new Audio('sounds/reset.wav');
        resetSound.volume = 0.2;
        resetSound.play();
-
-       //if(player.score >= 100000)  resetSound.pause()
   }
-
+  // this function is to update player 
   update() {
+       // if the collected prize is the heart player will get another life
        if(this.sprite === 'images/Heart.png'){
             player.lives += 1;
+            // update the lives number in statics panel
             document.querySelector('.lives').innerHTML =  player.lives;
+            // sound of getting a new life
             const newSoulSound = new Audio('sounds/new-life.mp3');
             newSoulSound.play();
        }
-
-       if(this.sprite === 'images/Key.png') {
-            allEnemies.forEach(enemy => {
-                enemy.x = -400;
-                enemy.y = -400;
-            });
-           
-          
-            const explosionSound = new Audio('sounds/explosion.mp3')
-            explosionSound.volume = 0.4;
-            explosionSound.play();
-                    
+        
+       // if the prize got the key hide enemy bugs
+       if(this.sprite === 'images/Key.png') { 
+           // sound of ex[losion after getting the key]
+           const explosionSound = new Audio('sounds/explosion.mp3')
+           explosionSound.volume = 0.4;
+           explosionSound.play();                
       }
   }
-
+  // this fucntion will make the updates when the player collect gems
   collected(){
             const points = document.querySelector('.points')
-           
+            //the player will collect the prizes when they are so near
             if(player.x - this.x >= -60 && player.x - this.x <= 90 && player.y - this.y >= -60 && player.y - this.y <= 70 ){
-
+               // hiding the prizes when collected
                this.x = -400;
                this.y = -400;
+               // increase this variable by one with every gem the player collect
                prizeNum += 1 ;
-              
+              // 
                if(prizeNum % 3 === 0) allPrizes.forEach(prize => setTimeout(() => prize.reset(),Math.floor(Math.random() * 5000)));
                // add the points only before getting the key
                if(player.score < 100000){
@@ -266,25 +265,26 @@ class Prize extends Entities {
             }
      }
 }
-
+// this is a flag to track number of gems collected
+// if its value of this variable is divisible by 3 this means that there is no gems shown for the player
+// this will achieved in the function collected
 let prizeNum = 0;
 // instaniating a player
 const player = new Player(200,380);
-// creating an array of player characters that casn start game
+// creating an array of player characters that casn start the game
 const playerCharacters = [...document.querySelectorAll('.player')];
 // if any character clicked it will be choosed to be our player
 playerCharacters.forEach(character => character.addEventListener('click', Player.choosePlayer));
-
-
 
 // Position "y" where the enemies will are created
 const enemiesY = [50, 140, 220];
 // creating an array of enemies 
 const allEnemies = enemiesY.map(y => new Enemy(0, y,'images/enemy-bug.png', Enemy.changeSpeed()));
 
-const  stonesY = [50,140,220,300];
+const  stonesPos = [50,100,150,190,230];
 
-const allStones = stonesY.map(y => new Enemy(0, y,'images/Rock.png', Enemy.changeSpeed()));
+
+const allStones = stonesPos.map(pos => new Enemy(pos, pos,'images/Rock.png', Enemy.changeSpeed()));
 
 const prizeEntities = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
 
