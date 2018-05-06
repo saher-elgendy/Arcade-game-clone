@@ -28,8 +28,8 @@ var Engine = (function(global) {
     canvas.height = 606;
     canvas.style.position = 'relative';
     canvas.style.top = '10%';
-    canvas.style.left= '25%';
-    canvas.style.right= '25%';
+    canvas.style.left= '50%';
+    canvas.style.transform = 'translateX(-50%)';
     canvas.style.display = 'none';
     doc.body.appendChild(canvas);
 
@@ -101,12 +101,21 @@ var Engine = (function(global) {
             enemy.checkCollisions();
         });
         
-        allPrizes.forEach(prize =>  prize.collected());
+        if(player.score < 100000) {
+           allPrizes.forEach(prize =>  prize.collected());
+       } 
 
-        if(player.score >= 60000  && player.score <= 70000)   Heart.collected();
-         if(player.score >= 100000 && player.score <= 200000) key.collected();
+        if(player.score >= 24000  && player.score <= 30000)   Heart.collected();
+         if(player.score >= 50000 && player.score <= 60000) key.collected();
       
         player.update();
+
+        if(player.score > 100000) {
+             allStones.forEach(stone =>  {
+                 stone.update(dt);
+                 stone.checkCollisions();
+            });
+        }
 
        
        
@@ -133,6 +142,20 @@ var Engine = (function(global) {
             numRows = 6,
             numCols = 5,
             row, col;
+
+            if(player.score >= 100000){
+               rowImages = [
+                'images/stone-block.png',
+                'images/stone-block.png',                          // Top row is water
+                'images/stone-block.png',                         // Top row is water
+                'images/stone-block.png',   // Row 1 of 3 of stone
+                'images/stone-block.png',   // Row 2 of 3 of stone
+                'images/stone-block.png',   // Row 3 of 3 of stone
+                'images/grass-block.png',   // Row 1 of 2 of grass
+                'images/grass-block.png'    // Row 2 of 2 of grass
+            ]
+             
+            }
         
         // Before drawing, clear existing canvas
         ctx.clearRect(0,0,canvas.width,canvas.height)
@@ -151,6 +174,7 @@ var Engine = (function(global) {
                  * we're using them over and over.
                  */
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                
             }
         }
  
@@ -176,9 +200,13 @@ var Engine = (function(global) {
        }
 
             
-        if(player.score >= 60000  && player.score <= 70000)  Heart.render();
-         if(player.score >= 100000 && player.score <= 200000) key.render();
-       
+        if(player.score >= 24000  && player.score <= 30000)  Heart.render();
+         if(player.score >= 50000 && player.score <= 60000) key.render();
+
+       if(player.score > 100000){
+           ctx.drawImage(Resources.get('images/char-princess-girl.png'), 200,0);
+           allStones.forEach(stone => stone.render());
+       }
 
             /*let i = 0;
             while(i < 3 ){
@@ -215,7 +243,8 @@ var Engine = (function(global) {
         'images/Gem Green.png',
         'images/Gem Orange.png',
         'images/Heart.png',
-        'images/Key.png'
+        'images/Key.png',
+        'images/Rock.png'
 
     ]);
     Resources.onReady(init);

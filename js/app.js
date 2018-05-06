@@ -49,23 +49,23 @@ class Enemy extends Entities {
         
         if(player.x - this.x >= -40 && player.x - this.x <= 70 && 
                     player.y - this.y >= -40 && player.y - this.y <= 30 ) {
-           // sound of collision
+           // initial positions
            player.x = 200;
            player.y = 400;          
-      
+           // sound of collision
            const collisionSound = new Audio('sounds/collision.mp3');
            collisionSound.volume = 0.6;
            collisionSound.play()
-        // initial positions
-         
+           // player lives decrease by one
            player.lives -= 1;
+           // show the updated lives number 
            livesCont.innerHTML = player.lives;
-         
-            player.die();
+           // check if the player still have lives
+           player.die();
 
        }
-
-       player.win();
+       // check if the player completed all tasks successfully
+      // player.win();
     }
 }
 
@@ -84,9 +84,25 @@ class Player extends Entities {
 
 // updating the player positions in response to crossing boundaries
     update() {  
+        //the player can not cross the boundaries
         this.x = this.x < 0 ? 0 : this.x > 400 ? 400 : this.x;
         this.y = this.y < 50 ? 50 : this.y > 380 ? 380 : this.y;
+        // get the sprite of the character chosen to start the game
         this.getSprite();
+       // if the player got the key pposition it temporarily in x 200 and y 200
+        if(this.score >= 100000 && this.score <= 150000){ // 
+          setTimeout(() =>{
+            this.score += 50000;
+            document.querySelector('.points').innerHTML = this.score;
+          }, 1000);
+
+          this.x = 200;
+          this.y = 400;
+        }
+
+        if(this.score > 100000 && player.y == 50){
+          this.win();
+        }
    } 
 
 // updating positions of the player in response to pressing control keys
@@ -112,16 +128,15 @@ class Player extends Entities {
     // this function will get the character chosen to start the game
     getSprite() {
          const chosen = document.querySelector('.chosen');
-
+         // if we choosed a different player instead of the default one the player changed to the chosen
          if(chosen) {
              this.sprite = chosen.firstElementChild.getAttribute('src');   
          }  
     }
 
-    win() {
-       if (this.score >= 250000 && this.lives > 0) {
+   win() {
            // hide the canvas
-           ctx.canvas.style = 'none';
+           ctx.canvas.style.display = 'none'
            // show the modal
            document.querySelector('.modal').style.display = 'block';
            // hide the statics panel 
@@ -132,11 +147,11 @@ class Player extends Entities {
            document.querySelector('.final-score').innerHTML = document.querySelector('.points').innerHTML; 
            //go to the start page
            setTimeout(() => location.reload(), 5000);
-       }
+       
     }
 
     die(){
-       if (this.lives == 0 && this.score < 100000) {
+       if (this.lives == 0 && this.score < 50000) {
            // stop the main music
            mainMusic.pause();
            // hide the canvas
@@ -188,7 +203,7 @@ class Prize extends Entities {
        resetSound.volume = 0.2;
        resetSound.play();
 
-       if(player.score >= 200000)  resetSound.pause()
+       //if(player.score >= 100000)  resetSound.pause()
   }
 
   update() {
@@ -224,12 +239,12 @@ class Prize extends Entities {
               
                if(prizeNum % 3 === 0) allPrizes.forEach(prize => setTimeout(() => prize.reset(),Math.floor(Math.random() * 5000)));
                // add the points only before getting the key
-               if(player.score < 200000){
+               if(player.score < 100000){
                    player.score += this.sprite === 'images/Gem Blue.png' ? 1000 : 
                    this.sprite === 'images/Gem Green.png' ? 2000 : 
                    this.sprite === 'images/Gem Orange.png' ? 3000 : 
                    this.sprite === 'images/Heart.png' ? 0 : 
-                   this.sprite === 'images/Key.png' ? 100000 : player.score;
+                   this.sprite === 'images/Key.png' ? 50000 : player.score;
                }
               
                this.update();
@@ -239,7 +254,7 @@ class Prize extends Entities {
                coinSound.volume = 0.2;
                coinSound.play();
 
-               if(player.score >= 200000) coinSound.pause();
+               //if(player.score >= 100000) coinSound.pause();
 
                
             }
@@ -261,6 +276,9 @@ const enemiesY = [50, 140, 220];
 // creating an array of enemies 
 const allEnemies = enemiesY.map(y => new Enemy(0, y,'images/enemy-bug.png', Enemy.changeSpeed()));
 
+const  stonesY = [50,140,220,300];
+
+const allStones = stonesY.map(y => new Enemy(0, y,'images/Rock.png', Enemy.changeSpeed()));
 
 const prizeEntities = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
 
