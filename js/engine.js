@@ -28,8 +28,9 @@ var Engine = (function(global) {
     canvas.height = 606;
     canvas.style.position = 'relative';
     canvas.style.top = '10%';
-    canvas.style.left= '50%';
-    canvas.style.transform = 'translateX(-50%)';
+    canvas.style.left= '25%';
+    
+    // canvas.style.transform = 'translateX(-50%)';
     canvas.style.display = 'none';
     doc.body.appendChild(canvas);
 

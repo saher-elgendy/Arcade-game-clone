@@ -98,6 +98,9 @@ class Player extends Entities {
 
           this.x = 200;
           this.y = 400;
+          // the princess scream 
+          const screamSound = new Audio('sounds/scream.mp3');
+          screamSound.play();
         }
 
         if(this.score > 100000 && player.y == 50){
@@ -145,6 +148,9 @@ class Player extends Entities {
            document.querySelector('.final-msg').innerHTML = 'You Win';
            //show the final score
            document.querySelector('.final-score').innerHTML = document.querySelector('.points').innerHTML; 
+           // the princess laugh
+           const laughSound = new Audio('sounds/laugh.mp3');
+           laughSound.play();
            //go to the start page
            setTimeout(() => location.reload(), 5000);
        
