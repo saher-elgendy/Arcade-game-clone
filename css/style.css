@@ -19,6 +19,7 @@ body {
 .character {
 	display: flex;
     justify-content: center;
+    cursor: pointer;
 }
 
 .instruction {
@@ -42,14 +43,11 @@ body {
 	color: white;
 	position: relative;
 	top: 37%;
-	left:37%;
-	right:37%;
+	left: 37%;
+	right: 37%;
 	border: none;
-	border-radius:30px;
-}
-
-.chosen {
-	transition: 1s ease;
+	border-radius: 30px;
+	cursor: pointer;
 }
 
 .statics {
@@ -64,7 +62,7 @@ body {
 	color: white;
 	margin: auto;
 	padding: .2em;
-	box-sizing:inherit;
+	box-sizing: inherit;
 }
 
 .static-cont {
@@ -83,12 +81,13 @@ body {
 }
 
 .final-score{
-	position:relative;
-	bottom:25%;
+	position: relative;
+	bottom: 25%;
 }
+
 .modal-details {
 	width: 100%;
-	height:100vh;
+	height: 100vh;
     display: flex;
 	flex-direction: column;
 	justify-content: space-around;
