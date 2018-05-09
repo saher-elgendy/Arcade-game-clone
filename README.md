@@ -28,5 +28,7 @@ Unzip the folder then load index.html on the browser
 
 ## Author:
 
-Saher Elgendy
+[Saher Elgendy][4]
+
+[4]: https://github.com/saher-elgendy            "Saher Elgendy"
 
