@@ -24,7 +24,6 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
         
-    canvas.style.border = "1px solid #DDD"
     canvas.width = 505;
     canvas.height = 606;
     canvas.style.margin = 'auto';
@@ -100,7 +99,7 @@ var Engine = (function(global) {
         });
         
         if(player.score < 100000) {
-           allPrizes.forEach(prize =>  prize.collected());
+           allGems.forEach(gem =>  gem.collected());
        } 
 
         if(player.score >= 24000  && player.score <= 30000)   Heart.collected();
@@ -192,7 +191,7 @@ var Engine = (function(global) {
        player.render();
        // render prizes
        if(player.score < 100000){
-           allPrizes.forEach(prize => prize.render());
+           allGems.forEach(gem => gem.render());
        }
 
             

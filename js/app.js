@@ -8,8 +8,7 @@ class Entities{
         this.y = y;
         this.sprite = sprite;
     }
-// a static function to change the speed of enemies when need this
-  
+    // this function will render all entities in the game
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
@@ -25,43 +24,40 @@ class Enemy extends Entities {
     render() {
         super.render();
     }
-
+    // this function will randomize the speed of the enemy every time cross the boundaries
     static changeSpeed(){
       return Math.floor(Math.random() * 200) + 100  ;
     }
-  
-// updating enemies positions and speed
+    // updating enemies positions and speed
     update(dt) {
         this.x += this.speed * dt;
-
     // this will reset the position of the enemies again when be off-canvas
         if (this.x > ctx.canvas.width) {
             this.x = 0;
             this.speed = Enemy.changeSpeed();
         }
     }
- // checking collisions of enemies with the player and resetting the position of the player after collision
+    // checking collisions of enemies with the player and resetting the position of the player after collision
     checkCollisions(){
-      //creating  a range in which both player and enemies should not exist together
+        //creating  a range in which both player and enemies should not exist together
         const livesCont = document.querySelector('.lives');
-         
+        // checking if the player and enemies in a collision state 
         if(player.x - this.x >= -40 && player.x - this.x <= 70 && 
                     player.y - this.y >= -40 && player.y - this.y <= 30 ) {
-           //initial positions
+           // return the player back to initial positions
            player.x = 200;
            player.y = 400;          
            // sound of collision
            const collisionSound = new Audio('sounds/collision.mp3');
            collisionSound.volume = 0.6;
            collisionSound.play()
-           // player lives decrease by one
+           // player lives decrease by one after every collision
            player.lives -= 1;
            // show the updated lives number in statics panel
            livesCont.innerHTML = player.lives;
-           // check if the player still have lives
+           // check if the player still has lives
            // if not the game ends by game over and the player score
            player.die();
-
        }
     }
 }
@@ -79,17 +75,17 @@ class Player extends Entities {
         super.render();  
     }
 
-// updating the player positions in response to crossing boundaries
+    // updating the player positions in response to trying to cross boundaries
     update() {  
         //the player can not cross the boundaries
         this.x = this.x < 0 ? 0 : this.x > 400 ? 400 : this.x;
         this.y = this.y < 50 ? 50 : this.y > 380 ? 380 : this.y;
         // get the sprite of the character chosen to start the game
         this.getSprite();
-       // if the player got the key position it temporarily in x 200 and y 200
+       // if the player got the key position it  in x 200 and y 200
         if(this.score >= 100000 && this.score < 150000){ // 
           setTimeout(() =>{
-            // this will ensure thatt the player can move freely not fixed in the initial position
+            // this will ensure that the player can move freely not fixed in the initial position
             this.score = this.score + 50000;
             document.querySelector('.points').innerHTML = this.score;
           }, 1000);
@@ -102,7 +98,7 @@ class Player extends Entities {
           screamSound.volume = 0.2;
           setTimeout(() => screamSound.play(), 2000);
         }
-        // when the player get to the second stage and get the princess the playyer wins
+        // when the player get to the second stage and get the princess the player wins
         if(this.score > 100000 && player.y == 50){
           this.win();
         }
@@ -206,12 +202,12 @@ class Prize extends Entities {
        //randomize the positions where gems appear every time
        this.x = Math.floor(Math.random() * 350);
        this.y = Math.floor(Math.random() * 250);
-       // sound of rrsetting gems again
+       // sound of showing gems again
        const resetSound = new Audio('sounds/reset.wav');
        resetSound.volume = 0.2;
        resetSound.play();
   }
-  // this function is to update player 
+  // this function is to update player iives if got the heart or got to the second stage if got the key
   update() {
        // if the collected prize is the heart player will get another life
        if(this.sprite === 'images/Heart.png'){
@@ -241,8 +237,9 @@ class Prize extends Entities {
                this.y = -400;
                // increase this variable by one with every gem the player collect
                prizeNum += 1 ;
-              // 
-               if(prizeNum % 3 === 0) allPrizes.forEach(prize => setTimeout(() => prize.reset(),Math.floor(Math.random() * 5000)));
+              // when the value of this variable is divisible by 3 this means that all gems was collected
+              // new bacth of gems should be shown to the player
+               if(prizeNum % 3 === 0) allGems.forEach(gem => setTimeout(() => gem.reset(),Math.floor(Math.random() * 5000)));
                // add the points only before getting the key
                if(player.score < 100000){
                    player.score += this.sprite === 'images/Gem Blue.png' ? 1000 : 
@@ -251,17 +248,14 @@ class Prize extends Entities {
                    this.sprite === 'images/Heart.png' ? 0 : 
                    this.sprite === 'images/Key.png' ? 50000 : player.score;
                }
-              
+               // to check if the player got the heart or the key
                this.update();
+               // showing the new score of the player on the statics panel
                points.innerHTML = player.score;       
-              
+               // sound of collecting gems
                const coinSound = new Audio('sounds/coin.mp3');
                coinSound.volume = 0.2;
-               coinSound.play();
-
-               //if(player.score >= 100000) coinSound.pause();
-
-               
+               coinSound.play();  
             }
      }
 }
@@ -280,27 +274,24 @@ playerCharacters.forEach(character => character.addEventListener('click', Player
 const enemiesY = [50, 140, 220];
 // creating an array of enemies 
 const allEnemies = enemiesY.map(y => new Enemy(0, y,'images/enemy-bug.png', Enemy.changeSpeed()));
-
-const  stonesPos = [50,100,150,190,230];
-
-
+// position of the stones this includes both x and y
+const  stonesPos = [70,110,160,270];
+// creating an array of stones
 const allStones = stonesPos.map(pos => new Enemy(pos, pos,'images/Rock.png', Enemy.changeSpeed()));
-
-const prizeEntities = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
-
-const allPrizes = prizeEntities.map(prize => new Prize(null,null,prize));
-
+// creating an array of gems that the player collect to get the points
+const Gems = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png'];
+// creatin an an array of all 
+const allGems = Gems.map(prize => new Prize(null,null,prize));
+// the heart that the player should get to get one life up
 const Heart = new Prize(null, null, 'images/Heart.png');
-
+// the key that the player should get to go to the second stage
 const key = new Prize(420,50,'images/Key.png');
-
+// the main music of the game
 let mainMusic = new Audio('sounds/main.mp3');
 
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-
-
  function detectKey(e) {
     const allowedKeys = {
         37: 'left',
