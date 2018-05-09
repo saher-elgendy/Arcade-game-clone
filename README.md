@@ -15,3 +15,16 @@ Play the game [live][1]
 Clone the game from github by ``` $ git clone 'https://github.com/saher-elgendy/Arcade-game-clone'```
 Unzip the folder then load index.html on the browser
 
+## Resources
+
+* [Google Fonts] [2]
+ [2]: https://fonts.google.com/ "Google Fonts"
+
+* Music from [the-arcadium.net] [3]
+[3]: https://the-arcadium.net/  "the-arcadium.net"
+
+
+## Author:
+
+Saher Elgendy
+
