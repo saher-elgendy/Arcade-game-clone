@@ -18,9 +18,11 @@ Unzip the folder then load index.html on the browser
 ## Resources
 
 * [Google Fonts] [1]
+
  [1]: https://fonts.google.com/ "Google Fonts"
 
 * Music from [the-arcadium.net] [1]
+
 [1]: https://the-arcadium.net/  "the-arcadium.net"
 
 
