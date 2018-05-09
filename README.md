@@ -17,13 +17,13 @@ Unzip the folder then load index.html on the browser
 
 ## Resources
 
-* [Google Fonts] [2]
+* [Google Fonts][2]
 
- [2]: https://fonts.google.com/ "Google Fonts"
+ [2]: https://fonts.google.com/        "Google Fonts"
 
-* Music from [the-arcadium.net] [3]
+* Music from [the-arcadium.net][3]
 
-[3]: https://the-arcadium.net/  "the-arcadium.net"
+[3]: https://the-arcadium.net/        "the-arcadium.net"
 
 
 ## Author:
