@@ -8,6 +8,4 @@ you need to collect gems till you reach 50000 points then you will get a key tha
 ## Play live
 Play the game [live][1]
 
-(https://saher-elgendy.github.io/Arcade-game-clone/).
-
-[1]: http://en.wikipedia.org/wiki/Markdown        "live"
+[1]: https://saher-elgendy.github.io/Arcade-game-clone/      "live"
